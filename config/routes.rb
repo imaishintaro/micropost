@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'fabs/create'
+
+  get 'fabs/destroy'
+
   get 'relationships/create'
 
   get 'relationships/destroy'
@@ -14,12 +18,15 @@ Rails.application.routes.draw do
     member do
       get :followings
       get :followers
+      get :likes
     end
     collection do
       get :search
+      get :fablist
     end
   end
 
   resources :microposts, only: [:create, :destroy]
   resources :relationships, only: [:create, :destroy]
+  resources :fabs, only: [:create, :destroy]
 end

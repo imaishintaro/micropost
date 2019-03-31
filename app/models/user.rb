@@ -11,6 +11,9 @@ class User < ApplicationRecord
    has_many :followings, through: :relationships, source: :follow
    has_many :reverses_of_relationship, class_name: 'Relationship', foreign_key: 'follow_id'
    has_many :followers, through: :reverses_of_relationship, source: :user
+   
+   has_many :fabs
+   has_many :fabposts,through: :fabs,source: :micropost #fabしたpostのリスト
  
   def follow(other_user)
     unless self == other_user
@@ -29,6 +32,20 @@ class User < ApplicationRecord
   
   def feed_microposts
     Micropost.where(user_id: self.following_ids + [self.id])
+  end
+  
+  
+  def fab(post) #micropostのidを引数にし、fabしているかどうかを確認する。
+     self.fabs.find_or_create_by(micropost_id: post.id)
+  end
+  
+  def unfab(post)
+     fab = self.fabs.find_by(micropost_id: post.id)
+     fab.destroy if fab
+  end
+  
+  def fab?(post)
+    self.fabposts.include?(post)
   end
   
 end

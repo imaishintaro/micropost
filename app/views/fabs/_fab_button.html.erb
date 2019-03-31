@@ -1,0 +1,12 @@
+
+  <% if current_user.fab?(micropost) %>
+     <%= form_for(current_user.fabs.find_by(micropost_id: micropost.id), html: { method: :delete }) do |f| %>
+      <%= hidden_field_tag :micropost_id, micropost.id %>
+      <%= f.submit 'Like Now!', class: 'btn btn-success btn-block btn-xs' %>
+     <% end %>
+   <% else %>
+      <%= form_for(current_user.fabs.build) do |f| %>
+       <%= hidden_field_tag :micropost_id, micropost.id %>
+       <%= f.submit 'Like', class: 'btn-block btn-xs' %>
+      <% end %>
+   <% end %>
